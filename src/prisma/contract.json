@@ -3172,7 +3172,7 @@
     "storageHash": "7c9b49d20bd28734bc588566f5d6570fdc82711e596b06e8ff23e9de9f1d235a"
   },
   "execution": {
-    "executionHash": "06b8542593f33ba48b96dd535fcc3a6c8e2674f05b19f0e0c9d9cf2b12adcd40",
+    "executionHash": "dfc11b6cce29a5702bf2d3769237256cc3c64ba7a818b63177275d065fd2b235",
     "mutations": {
       "defaults": [
         {
@@ -3194,6 +3194,39 @@
           "ref": {
             "column": "id",
             "namespace": "public",
+            "table": "Categories"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "ContactMessage"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "Educations"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
             "table": "Experiences"
           }
         },
@@ -3205,7 +3238,62 @@
           "ref": {
             "column": "id",
             "namespace": "public",
+            "table": "Industries"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "Organisations"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
             "table": "Profile"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "Projects"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "Skills"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "SocialLinks"
           }
         }
       ]

@@ -9,3 +9,13 @@ export const toYearsOfExperience = (
 
   return value as unknown as Numeric<3, 1>;
 };
+
+export const toPercentage = (
+  value: number | undefined | null
+): Numeric<4, 2> | undefined => {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return value as unknown as Numeric<4, 2>;
+};
