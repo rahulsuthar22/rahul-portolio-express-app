@@ -1,0 +1,248 @@
+// use prisma-next
+// Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
+namespace public {
+  model AdminUser {
+    id           String             @id(map: "AdminUser_pkey") @default(uuid())
+    email        String
+    passwordHash String
+    role         pg.enum(AdminRole) @default("ADMIN")
+    createdAt    Timestamp(3)       @default(now())
+    updatedAt    Timestamp(3)       @default(now())
+
+    @@index([email], map: "AdminUser_email_key", unique: true)
+    @@map("AdminUser")
+  }
+
+  model Categories {
+    id             String          @id(map: "Categories_pkey")
+    name           String
+    link           String?
+    icon           String?
+    displayOrder   Int             @default(0)
+    createdAt      Timestamp(3)    @default(now())
+    updatedAt      Timestamp(3)    @default(now())
+    categorySkills CategorySkill[]
+
+    @@index([name], map: "Categories_name_key", unique: true)
+    @@map("Categories")
+  }
+
+  model Skills {
+    id             String          @id(map: "Skills_pkey")
+    name           String
+    link           String?
+    icon           String?
+    displayOrder   Int             @default(0)
+    createdAt      Timestamp(3)    @default(now())
+    updatedAt      Timestamp(3)    @default(now())
+    categorySkills CategorySkill[]
+    projectSkills  ProjectSkill[]
+
+    @@index([name], map: "Skills_name_key", unique: true)
+    @@map("Skills")
+  }
+
+  model CategorySkill {
+    skillId    String
+    categoryId String
+    category   Categories @relation(fields:[categoryId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "CategorySkill_categoryId_fkey")
+    skill      Skills     @relation(fields:[skillId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "CategorySkill_skillId_fkey", index: false)
+
+    @@id([skillId, categoryId], map: "CategorySkill_pkey")
+    @@index([categoryId], map: "CategorySkill_categoryId_idx")
+    @@map("CategorySkill")
+  }
+
+  model ContactMessage {
+    id        String                 @id(map: "ContactMessage_pkey")
+    name      String
+    email     String
+    subject   String?
+    message   String
+    status    pg.enum(ContactStatus) @default("NEW")
+    createdAt Timestamp(3)           @default(now())
+    updatedAt Timestamp(3)           @default(now())
+
+    @@index([createdAt], map: "ContactMessage_createdAt_idx")
+    @@index([status], map: "ContactMessage_status_idx")
+    @@map("ContactMessage")
+  }
+
+  model Organisations {
+    id          String        @id(map: "Organisations_pkey")
+    name        String
+    description String?
+    website     String?
+    createdAt   Timestamp(3)  @default(now())
+    updatedAt   Timestamp(3)  @default(now())
+    experiences Experiences[]
+    profiles    Profile[]
+    projects    Projects[]
+
+    @@index([name], map: "Organisations_name_key", unique: true)
+    @@map("Organisations")
+  }
+
+  model Profile {
+    id                String              @default(uuid()) @id(map: "Profile_pkey")
+    photo             String?
+    name              String
+    role              String
+    email             String
+    description       String?
+    yearsOfExperience Numeric(3, 1)?
+    currentPosition   String?
+    currentOrgId      String?
+    aboutHeading      String?
+    aboutDescription  String?
+    createdAt         Timestamp(3)        @default(now())
+    updatedAt         Timestamp(3)        @default(now())
+    educations        Educations[]
+    experiences       Experiences[]
+    profileIndustries ProfileIndustries[]
+    socialLinks       SocialLinks[]
+    currentOrg        Organisations?      @relation(fields:[currentOrgId], references:[id], onDelete: SetNull, onUpdate: Cascade, map: "Profile_currentOrgId_fkey", index: false)
+
+    @@index([email], map: "Profile_email_key", unique: true)
+    @@map("Profile")
+  }
+
+  model Educations {
+    id           String         @id(map: "Educations_pkey")
+    institute    String
+    degree       String
+    cgpa         Numeric(4, 2)?
+    percentage   Numeric(4, 2)?
+    startDate    Timestamp(3)
+    endDate      Timestamp(3)?
+    link         String?
+    displayOrder Int            @default(0)
+    profileId    String
+    createdAt    Timestamp(3)   @default(now())
+    updatedAt    Timestamp(3)   @default(now())
+    profile      Profile        @relation(fields:[profileId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "Educations_profileId_fkey")
+
+    @@index([displayOrder], map: "Educations_displayOrder_idx")
+    @@index([profileId], map: "Educations_profileId_idx")
+    @@map("Educations")
+  }
+
+  model Experiences {
+    id           String            @id(map: "Experiences_pkey") @default(uuid())
+    position     String
+    startDate    Timestamp(3)
+    endDate      Timestamp(3)?
+    modeOfWork   pg.enum(WorkMode)
+    description  String?
+    displayOrder Int               @default(0)
+    isCurrent    Boolean           @default(false)
+    profileId    String
+    orgId        String
+    createdAt    Timestamp(3)      @default(now())
+    updatedAt    Timestamp(3)      @default(now())
+    org          Organisations     @relation(fields:[orgId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "Experiences_orgId_fkey", index: false)
+    profile      Profile           @relation(fields:[profileId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "Experiences_profileId_fkey")
+
+    @@index([displayOrder], map: "Experiences_displayOrder_idx")
+    @@index([profileId], map: "Experiences_profileId_idx")
+    @@map("Experiences")
+  }
+
+  model Industries {
+    id                String              @id(map: "Industries_pkey")
+    name              String
+    slug              String
+    displayOrder      Int                 @default(0)
+    createdAt         Timestamp(3)        @default(now())
+    updatedAt         Timestamp(3)        @default(now())
+    profileIndustries ProfileIndustries[]
+
+    @@index([name], map: "Industries_name_key", unique: true)
+    @@index([slug], map: "Industries_slug_key", unique: true)
+    @@map("Industries")
+  }
+
+  model ProfileIndustries {
+    profileId  String
+    industryId String
+    industry   Industries @relation(fields:[industryId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "ProfileIndustries_industryId_fkey")
+    profile    Profile    @relation(fields:[profileId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "ProfileIndustries_profileId_fkey", index: false)
+
+    @@id([profileId, industryId], map: "ProfileIndustries_pkey")
+    @@index([industryId], map: "ProfileIndustries_industryId_idx")
+    @@map("ProfileIndustries")
+  }
+
+  model Projects {
+    id            String         @id(map: "Projects_pkey")
+    name          String
+    description   String?
+    startDate     Timestamp(3)?
+    endDate       Timestamp(3)?
+    link          String?
+    impact        String?
+    playStoreLink String?
+    iosLink       String?
+    displayOrder  Int            @default(0)
+    orgId         String?
+    createdAt     Timestamp(3)   @default(now())
+    updatedAt     Timestamp(3)   @default(now())
+    projectSkills ProjectSkill[]
+    org           Organisations? @relation(fields:[orgId], references:[id], onDelete: SetNull, onUpdate: Cascade, map: "Projects_orgId_fkey")
+
+    @@index([displayOrder], map: "Projects_displayOrder_idx")
+    @@index([orgId], map: "Projects_orgId_idx")
+    @@map("Projects")
+  }
+
+  model ProjectSkill {
+    projectId String
+    skillId   String
+    project   Projects @relation(fields:[projectId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "ProjectSkill_projectId_fkey", index: false)
+    skill     Skills   @relation(fields:[skillId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "ProjectSkill_skillId_fkey")
+
+    @@id([projectId, skillId], map: "ProjectSkill_pkey")
+    @@index([skillId], map: "ProjectSkill_skillId_idx")
+    @@map("ProjectSkill")
+  }
+
+  model SocialLinks {
+    id           String                  @id(map: "SocialLinks_pkey")
+    platform     pg.enum(SocialPlatform)
+    url          String
+    displayOrder Int                     @default(0)
+    profileId    String
+    createdAt    Timestamp(3)            @default(now())
+    updatedAt    Timestamp(3)            @default(now())
+    profile      Profile                 @relation(fields:[profileId], references:[id], onDelete: Cascade, onUpdate: Cascade, map: "SocialLinks_profileId_fkey")
+
+    @@index([profileId], map: "SocialLinks_profileId_idx")
+    @@index([profileId, platform], map: "SocialLinks_profileId_platform_key", unique: true)
+    @@map("SocialLinks")
+  }
+
+  native_enum AdminRole {
+    ADMIN = "ADMIN"
+  }
+
+  native_enum ContactStatus {
+    NEW = "NEW"
+    READ = "READ"
+    REPLIED = "REPLIED"
+    ARCHIVED = "ARCHIVED"
+  }
+
+  native_enum SocialPlatform {
+    LINKEDIN = "LINKEDIN"
+    GITHUB = "GITHUB"
+    TWITTER = "TWITTER"
+    NAUKARI = "NAUKARI"
+    OTHER = "OTHER"
+  }
+
+  native_enum WorkMode {
+    REMOTE = "REMOTE"
+    HYBRID = "HYBRID"
+    ONSITE = "ONSITE"
+  }
+}

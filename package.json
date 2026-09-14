@@ -1,0 +1,47 @@
+{
+  "name": "portfolio-api",
+  "version": "1.0.0",
+  "description": "Production-grade portfolio backend API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "contract:emit": "prisma contract emit",
+    "create:admin": "tsx scripts/create-admin.ts"
+  },
+  "keywords": [
+    "portfolio",
+    "express",
+    "typescript",
+    "node",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
+    "@prisma/orm-postgres": "^8.0.0-rc.8",
+    "argon2": "^0.45.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "jose": "^6.2.12",
+    "pg": "^8.23.0",
+    "pino": "^10.3.1",
+    "pino-http": "^11.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.2.0",
+    "prisma": "^8.0.0-rc.13",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
