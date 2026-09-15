@@ -14,6 +14,11 @@ import {
   removeSkillFromProject
 } from "./project.service.js";
 
+import type {
+  IdRequest,
+  ProjectSkillRequest,
+} from "../../types/request.types.js";
+
 export async function getProjectsController(
   _req: Request,
   res: Response
@@ -28,11 +33,11 @@ export async function getProjectsController(
 }
 
 export async function getProjectByIdController(
-  req: Request,
+  req: IdRequest,
   res: Response
 ) {
   const project =
-    await getProjectById(req.params.id?.toString()!);
+    await getProjectById(req.params.id);
 
   res.json({
     success: true,
@@ -54,12 +59,12 @@ export async function createProjectController(
 }
 
 export async function updateProjectController(
-  req: Request,
+  req: IdRequest,
   res: Response
 ) {
   const project =
     await updateExistingProject(
-      req.params.id?.toString()!,
+      req.params.id,
       req.body
     );
 
@@ -70,23 +75,23 @@ export async function updateProjectController(
 }
 
 export async function deleteProjectController(
-  req: Request,
+  req: IdRequest,
   res: Response
 ) {
   await deleteExistingProject(
-    req.params.id?.toString()!
+    req.params.id
   );
 
   res.status(204).send();
 }
 
 export async function getProjectSkillsController(
-  req: Request,
+  req: IdRequest,
   res: Response
 ) {
   const skills =
     await getSkillsForProject(
-      req.params.id?.toString()!
+      req.params.id
     );
 
   res.json({
@@ -96,13 +101,13 @@ export async function getProjectSkillsController(
 }
 
 export async function addSkillToProjectController(
-  req: Request,
+  req: ProjectSkillRequest,
   res: Response
 ) {
   const skill =
     await addSkillToProject(
-      req.params.id?.toString()!,
-      req.params.skillId?.toString()!
+      req.params.id,
+      req.params.skillId
     );
 
   res.status(201).json({
@@ -112,12 +117,12 @@ export async function addSkillToProjectController(
 }
 
 export async function removeSkillFromProjectController(
-  req: Request,
+  req: ProjectSkillRequest,
   res: Response
 ) {
   await removeSkillFromProject(
-    req.params.id?.toString()!,
-    req.params.skillId?.toString()!
+    req.params.id,
+    req.params.skillId
   );
 
   res.status(204).send();

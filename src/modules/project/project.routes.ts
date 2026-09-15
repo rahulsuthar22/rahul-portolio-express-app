@@ -6,7 +6,7 @@ import {
 } from "../../middleware/auth.middleware.js";
 
 import {
-  validate as validateBody
+  validate
 } from "../../middleware/validate.middleware.js";
 
 import {
@@ -24,6 +24,7 @@ import {
   createProjectSchema,
   updateProjectSchema
 } from "./project.schema.js";
+import { idParamSchema, projectSkillParamsSchema } from "../../schema/common.schema.js";
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.get(
 
 router.get(
   "/:id",
+  validate(idParamSchema, "params"),
   getProjectByIdController
 );
 
@@ -41,7 +43,7 @@ router.post(
   "/",
   requireAuth,
   requireRole("ADMIN"),
-  validateBody(createProjectSchema),
+  validate(createProjectSchema),
   createProjectController
 );
 
@@ -49,7 +51,8 @@ router.patch(
   "/:id",
   requireAuth,
   requireRole("ADMIN"),
-  validateBody(updateProjectSchema),
+  validate(idParamSchema, "params"),
+  validate(updateProjectSchema),
   updateProjectController
 );
 
@@ -57,12 +60,14 @@ router.delete(
   "/:id",
   requireAuth,
   requireRole("ADMIN"),
+  validate(idParamSchema, "params"),
   deleteProjectController
 );
 
 
 router.get(
   "/:id/skills",
+  validate(idParamSchema, "params"),
   getProjectSkillsController
 );
 
@@ -70,6 +75,7 @@ router.post(
   "/:id/skills/:skillId",
   requireAuth,
   requireRole("ADMIN"),
+  validate(projectSkillParamsSchema, "params"),
   addSkillToProjectController
 );
 
@@ -77,6 +83,7 @@ router.delete(
   "/:id/skills/:skillId",
   requireAuth,
   requireRole("ADMIN"),
+  validate(projectSkillParamsSchema, "params"),
   removeSkillFromProjectController
 );
 
