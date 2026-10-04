@@ -2,7 +2,7 @@ import 'dotenv/config';
 import postgres from '@prisma/orm-postgres/runtime';
 import type { Contract } from '../prisma/contract';
 import contractJson from '../prisma/contract.json' with { type: 'json' };
-import env from './env';
+import env from './env.js';
 import { Temporal } from '@js-temporal/polyfill';
 
 

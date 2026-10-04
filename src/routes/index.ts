@@ -1,18 +1,17 @@
 import { Router } from "express";
 
-import profileRouter from "../modules/profile/profile.routes"
-import healthRouter from "./health.routes.js"
-import { db } from "../config/db.js";
-import authRoutes from "../modules/auth/auth.routes";
-import experienceRoutes from "../modules/experience/experience.routes";
-import organisationRoutes from "../modules/organisation/organisation.routes";
-import educationRoutes from "../modules/education/education.routes";
-import skillRoutes from "../modules/skill/skill.routes";
-import categoryRoutes from "../modules/category/category.routes";
-import industryRoutes from "../modules/industry/industry.routes";
-import projectRoutes from "../modules/project/project.routes";
-import socialLinkRoutes from "../modules/social-link/social-link.routes";
-import contactRoutes from "../modules/contact/contact.routes";
+import profileRouter from "../modules/profile/profile.routes.js"
+import healthRouter from "../modules/health/health.routes.js"
+import authRoutes from "../modules/auth/auth.routes.js";
+import experienceRoutes from "../modules/experience/experience.routes.js";
+import organisationRoutes from "../modules/organisation/organisation.routes.js";
+import educationRoutes from "../modules/education/education.routes.js";
+import skillRoutes from "../modules/skill/skill.routes.js";
+import categoryRoutes from "../modules/category/category.routes.js";
+import industryRoutes from "../modules/industry/industry.routes.js";
+import projectRoutes from "../modules/project/project.routes.js";
+import socialLinkRoutes from "../modules/social-link/social-link.routes.js";
+import contactRoutes from "../modules/contact/contact.routes.js";
 
 const router = Router();
 
@@ -39,6 +38,5 @@ router.use("/industries", industryRoutes);
 router.use("/projects", projectRoutes);  
 router.use("/social-links", socialLinkRoutes);  
 router.use("/contact", contactRoutes);  
-
 export default router;
 

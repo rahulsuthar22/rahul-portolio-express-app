@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "../../docs/zod-openapi";
 
 export const createProfileSchema = z.object({
   photo: z
@@ -10,18 +10,30 @@ export const createProfileSchema = z.object({
     .string()
     .trim()
     .min(2)
-    .max(100),
+    .max(100)
+    .openapi({
+      example: "Rahul Suthar",
+      description: "Full name of the profile owner",
+    }),
 
   role: z
     .string()
     .trim()
     .min(2)
-    .max(100),
+    .max(100)
+    .openapi({
+      example: "Full Stack Developer",
+    })
+  ,
 
   email: z
     .string()
     .email()
-    .transform((value) => value.toLowerCase().trim()),
+    .transform((value) => value.toLowerCase().trim())
+    .openapi({
+      example: "rahul@example.com",
+      description: "Profile email address",
+    }),
 
   description: z
     .string()
@@ -58,10 +70,11 @@ export const createProfileSchema = z.object({
     .trim()
     .max(5000)
     .optional()
-});
+})
+.openapi("CreateProfileRequest");
 
 export const updateProfileSchema =
-  createProfileSchema.partial();
+  createProfileSchema.partial().openapi("UpdateProfileRequest");
 
 export type CreateProfileSchema = z.infer<
   typeof createProfileSchema

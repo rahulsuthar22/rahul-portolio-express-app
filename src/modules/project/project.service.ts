@@ -28,9 +28,12 @@ import type {
 import {
   findSkillById
 } from "../skill/skill.repository.js";
+import type { ProjectQueryInput } from "../../types/project-query.types.js";
 
-export async function getProjects() {
-  return findAllProjects();
+export async function getProjects(
+  query: ProjectQueryInput
+) {
+  return findAllProjects(query);
 }
 
 export async function getProjectById(

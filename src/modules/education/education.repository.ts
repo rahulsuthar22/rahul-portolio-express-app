@@ -1,6 +1,6 @@
-import { db } from "../../config/db";
-import { toPlainDateTime } from "../../utils/to-plain-text-date-time";
-import { toPercentage } from "../../utils/toYearsOfExperience";
+import { db } from "../../config/db.js";
+import { toPlainDateTime } from "../../utils/to-plain-text-date-time.js";
+import { toPercentage } from "../../utils/toYearsOfExperience.js";
 import type {
   CreateEducationInput,
   UpdateEducationInput

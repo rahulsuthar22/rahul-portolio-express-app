@@ -1,5 +1,5 @@
 import "dotenv/config";
-import {z} from "zod";
+import { z } from "zod";
 
 
 const envSchema = z.object({
@@ -37,27 +37,35 @@ const envSchema = z.object({
 
   authAccessTokenTtl: z
     .string()
-    .default("15m")
+    .default("15m"),
+
+  authCookieName: z
+    .string()
+    .min(1)
+    .default("portfolio_access_token"),
+
 });
 
 const parsedEnv = envSchema.safeParse({
-    nodeEnv: process.env.NODE_ENV,
-    port: process.env.PORT,
-    corsOrigin: process.env.CORS_ORIGIN,
-    databaseUrl: process.env.DATABASE_URL ,
-    authJwtSecret: process.env.AUTH_JWT_SECRET,
-    authJwtIssuer: process.env.AUTH_JWT_ISSUER,
-    authJwtAudience: process.env.AUTH_JWT_AUDIENCE ,
-    authAccessTokenTtl: process.env.AUTH_ACCESS_TOKEN_TTL
+  nodeEnv: process.env.NODE_ENV,
+  port: process.env.PORT,
+  corsOrigin: process.env.CORS_ORIGIN,
+  databaseUrl: process.env.DATABASE_URL,
+  authJwtSecret: process.env.AUTH_JWT_SECRET,
+  authJwtIssuer: process.env.AUTH_JWT_ISSUER,
+  authJwtAudience: process.env.AUTH_JWT_AUDIENCE,
+  authAccessTokenTtl: process.env.AUTH_ACCESS_TOKEN_TTL,
+  authCookieName: process.env.AUTH_COOKIE_NAME,
+
 })
 
-if(!parsedEnv.success){
-    console.error(
-        "Invalid environment configuration",
-        parsedEnv.error.flatten().fieldErrors
-    )
+if (!parsedEnv.success) {
+  console.error(
+    "Invalid environment configuration",
+    parsedEnv.error.flatten().fieldErrors
+  )
 
-    process.exit(1);
+  process.exit(1);
 }
 
 const env = parsedEnv.data;

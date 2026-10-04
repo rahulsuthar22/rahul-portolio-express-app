@@ -25,11 +25,13 @@ import {
   updateProjectSchema
 } from "./project.schema.js";
 import { idParamSchema, projectSkillParamsSchema } from "../../schema/common.schema.js";
+import { paginationSchema } from "../../schema/pagination.schema.js";
 
 const router = Router();
 
 router.get(
   "/",
+  validate(paginationSchema, "query"),
   getProjectsController
 );
 

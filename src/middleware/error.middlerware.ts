@@ -91,6 +91,19 @@ export const errorMiddleware: ErrorRequestHandler = (
 
             return;
         }
+
+
+        if (err.code === "P2003") {
+            res.status(409).json({
+                success: false,
+                error: {
+                    code: "FOREIGN_KEY_CONSTRAINT",
+                    message: "The requested resource is referenced by another resource"
+                }
+            });
+
+            return;
+        }
     }
 
     /**

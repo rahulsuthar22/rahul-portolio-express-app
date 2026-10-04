@@ -8,7 +8,8 @@ import {notFoundMiddleware} from "./middleware/not-found.middlerware.js";
 import {errorMiddleware} from "./middleware/error.middlerware.js";
 import { requestLogger } from "./middleware/request-logger.middleware.js";
 import { globalRateLimiter } from "./middleware/rate-limit.middleware.js";
-
+import docsRoutes from "./docs/docs.routes.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -17,7 +18,6 @@ const app = express();
  */
 
 app.use(requestLogger)
-
 
 /**
  * Rate Limiter
@@ -30,12 +30,12 @@ app.use(globalRateLimiter)
  */
 app.use(helmet());
 
-// app.use(
-//     cors({
-//         origin: env.corsOrigin,
-//         credentials: true,
-//     })
-// );
+app.use(
+    cors({
+        origin: env.corsOrigin,
+        credentials: true,
+    })
+);
 
 /**
  * Request body parsing
@@ -54,10 +54,20 @@ app.use(
 );
 
 /**
+ * Cookie parser // it will set the HttpOnly cookie
+ */
+app.use(cookieParser());
+    
+/**
  * API routes
  */
 
 app.use("/api/v1", apiRouter);
+
+/**
+ * Swagger API documentation
+ */
+app.use("/api/docs", docsRoutes);
 
 /**
  * 404 handler

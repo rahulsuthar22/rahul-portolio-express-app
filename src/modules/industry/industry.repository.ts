@@ -1,5 +1,5 @@
-import { db } from "../../config/db";
-import { toPlainDateTime } from "../../utils/to-plain-text-date-time";
+import { db } from "../../config/db.js";
+import { toPlainDateTime } from "../../utils/to-plain-text-date-time.js";
 
 import type {
   CreateIndustryInput,

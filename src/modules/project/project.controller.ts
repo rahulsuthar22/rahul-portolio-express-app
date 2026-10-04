@@ -18,17 +18,20 @@ import type {
   IdRequest,
   ProjectSkillRequest,
 } from "../../types/request.types.js";
+import type { ProjectQueryInput } from "../../types/project-query.types.js";
 
 export async function getProjectsController(
-  _req: Request,
+  req: Request,
   res: Response
 ) {
-  const projects =
-    await getProjects();
+  const query = res.locals.query as ProjectQueryInput
+  const result =
+    await getProjects(query);
 
   res.json({
     success: true,
-    data: projects
+    data: result.data,
+    meta: result.meta
   });
 }
 

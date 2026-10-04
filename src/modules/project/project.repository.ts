@@ -1,5 +1,7 @@
-import { db } from "../../config/db";
-import { toPlainDateTime } from "../../utils/to-plain-text-date-time";
+import { db } from "../../config/db.js";
+import type { PaginationInput } from "../../types/pagination.types";
+import type { ProjectQueryInput } from "../../types/project-query.types.js";
+import { toPlainDateTime } from "../../utils/to-plain-text-date-time.js";
 
 import type {
   CreateProjectInput,
@@ -9,14 +11,107 @@ import type {
 const projects =
   db.orm.public.Projects;
 
-export async function findAllProjects() {
-  return projects
-    .where({})
-    .orderBy([
-        (item) => item.displayOrder.asc(),
-        (item) => item.startDate.desc()
-      ])
-    .all();
+export async function findAllProjects(
+  query: ProjectQueryInput
+) {
+  const {
+    page,
+    limit,
+    sortBy,
+    sortOrder,
+    search,
+    organizationId,
+  } = query;
+
+  const offset = (page - 1) * limit;
+
+  /*
+   * Build filters
+   */
+  const filters: Record<string, unknown> = {};
+
+  if (organizationId) {
+    filters.orgId = organizationId;
+  }
+
+  /*
+   * Search
+   *
+   * Keep this simple for now:
+   * project name contains search term.
+   */
+  if (search) {
+    filters.name = {
+      contains: search,
+    };
+  }
+
+  /*
+   * Sorting
+   */
+  const orderBy =
+    sortBy === "displayOrder"
+      ? [(item: any) =>
+        sortOrder === "asc"
+          ? item.displayOrder.asc()
+          : item.displayOrder.desc()
+      ]
+      : sortBy === "startDate"
+        ? [(item: any) =>
+          sortOrder === "asc"
+            ? item.startDate.asc()
+            : item.startDate.desc()
+        ]
+        : sortBy === "endDate"
+          ? [(item: any) =>
+            sortOrder === "asc"
+              ? item.endDate.asc()
+              : item.endDate.desc()
+          ]
+          : sortBy === "name"
+            ? [(item: any) =>
+              sortOrder === "asc"
+                ? item.name.asc()
+                : item.name.desc()
+            ]
+            : sortBy === "createdAt"
+              ? [(item: any) =>
+                sortOrder === "asc"
+                  ? item.createdAt.asc()
+                  : item.createdAt.desc()
+              ]
+              : [(item: any) =>
+                sortOrder === "asc"
+                  ? item.updatedAt.asc()
+                  : item.updatedAt.desc()
+              ];
+
+  const [data, countResult] = await Promise.all([
+    projects
+      .where(filters)
+      .orderBy(orderBy)
+      .offset(offset)
+      .limit(limit)
+      .all(),
+
+    projects
+      .where(filters)
+      .aggregate((aggregate) => ({
+        total: aggregate.count(),
+      })),
+  ]);
+
+  const total = countResult.total;
+
+  return {
+    data,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 }
 
 export async function findProjectById(
@@ -105,8 +200,7 @@ export async function deleteProject(
 
 const projectSkills =
   db.orm.public.ProjectSkill;
-  
-  
+
 export async function findProjectSkills(
   projectId: string
 ) {

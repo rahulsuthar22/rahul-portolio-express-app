@@ -1,18 +1,22 @@
 import type {
   NextFunction,
   Request,
+  RequestHandler,
   Response,
 } from "express";
 
 import type { ZodType } from "zod";
 
-export const validate = (
-  schema: ZodType,
-  target: "body" | "query" | "params" = "body",
-) => {
+type ValidationSource = "body" | "query" | "params";
+
+
+export function validate<T>(
+  schema: ZodType<T>,
+  target: ValidationSource = "body",
+): RequestHandler{
   return (
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
   ) => {
     const result = schema.safeParse(req[target]);
@@ -22,7 +26,7 @@ export const validate = (
       return;
     }
 
-    req[target] = result.data;
+    res.locals[target] = result.data;
     next();
   };
 };
