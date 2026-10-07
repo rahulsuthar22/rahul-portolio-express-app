@@ -7,6 +7,7 @@ import { openapiRegistry } from "./openapi.registry.js";
 import "../modules/profile/profile.openapi.js";
 import "../modules/auth/auth.openapi.js";
 import "../modules/experience/experience.openapi.js";
+import "../modules/organisation/organisation.openapi.js";
 
 const generator = new OpenApiGeneratorV31(
   openapiRegistry.definitions

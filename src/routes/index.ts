@@ -30,7 +30,7 @@ router.use("/profile", profileRouter)
 router.use("/health", healthRouter)
 router.use("/auth",  authRoutes);
 router.use("/experience", experienceRoutes);
-router.use("/organisatins", organisationRoutes);  
+router.use("/organisation", organisationRoutes);  
 router.use("/educations", educationRoutes);  
 router.use("/skills", skillRoutes);  
 router.use("/categories", categoryRoutes);  

@@ -43,10 +43,7 @@ export async function updateExistingProfile(
   }
 
   const updatedProfile =
-    await profileRepository.updateProfile(
-      id,
-      input
-    );
+    await profileRepository.updateProfile(id, input);
 
   if (!updatedProfile) {
     throw new NotFoundError(

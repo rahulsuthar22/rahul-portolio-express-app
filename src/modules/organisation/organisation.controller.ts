@@ -68,3 +68,18 @@ export async function updateOrganisation(
     data: organisation
   });
 }
+
+export async function deleteOrganisation(
+  req: Request,
+  res: Response
+) {
+  await organisationService
+    .deleteExistingOrganisation(
+      req.params.id?.toString()!
+    );
+
+  res.status(200).json({
+    success: true,
+    data: null
+  });
+}

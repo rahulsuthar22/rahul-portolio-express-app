@@ -6,7 +6,7 @@ export interface CreateProfileInput {
   description?: string;
   yearsOfExperience?: number;
   currentPosition?: string;
-  currentCompany?: string;
+  currentOrgId?: string | null;
   aboutHeading?: string;
   aboutDescription?: string;
 }
@@ -19,7 +19,7 @@ export interface UpdateProfileInput {
   description?: string;
   yearsOfExperience?: number;
   currentPosition?: string;
-  currentCompany?: string;
+  currentOrgId?: string | null;
   aboutHeading?: string;
   aboutDescription?: string;
 }

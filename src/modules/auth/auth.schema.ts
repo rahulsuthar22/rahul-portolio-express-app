@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "../../docs/zod-openapi";
 
 export const loginSchema = z.object({
     email: z.email().transform((value)=> value.toLowerCase().trim()),

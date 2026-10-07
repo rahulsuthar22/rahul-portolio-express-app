@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   createOrganisation,
+  deleteOrganisation,
   getOrganisationById,
   getOrganisations,
   updateOrganisation
@@ -55,6 +56,13 @@ router.patch(
   requireRole("ADMIN"),
   validate(updateOrganisationSchema),
   updateOrganisation
+);
+
+router.delete(
+  "/:id",
+  requireAuth,
+  requireRole("ADMIN"),
+  deleteOrganisation
 );
 
 export default router;

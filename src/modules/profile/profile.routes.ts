@@ -32,6 +32,8 @@ router.post(
 
 router.patch(
   "/:id",
+  requireAuth,
+  requireRole("ADMIN"),
   validate(updateProfileSchema),
   updateProfile
 );

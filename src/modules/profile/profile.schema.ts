@@ -51,13 +51,18 @@ export const createProfileSchema = z.object({
     .string()
     .trim()
     .max(150)
+    .nullable()
     .optional(),
 
-  currentCompany: z
+  currentOrgId: z
     .string()
-    .trim()
-    .max(150)
-    .optional(),
+    .uuid()
+    .nullable()
+    .optional()
+    .openapi({
+      example: "0e7dd0d1-0809-4c4b-afc3-c9f315239986",
+      description: "Organisation UUID for current company",
+    }),
 
   aboutHeading: z
     .string()
