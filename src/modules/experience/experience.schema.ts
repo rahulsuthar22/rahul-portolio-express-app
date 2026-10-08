@@ -2,9 +2,9 @@ import { z } from "../../docs/zod-openapi";
 
 export const createExperienceSchema = z
   .object({
-    profileId: z.uuid(),
+    profileId: z.string(),
 
-    organisationId: z.uuid(),
+    organisationId: z.string(),
 
     position: z
       .string()
@@ -16,8 +16,8 @@ export const createExperienceSchema = z
 
     endDate: z
       .union([
-        z.coerce.date(),
         z.null(),
+        z.coerce.date(),
       ])
       .optional(),
 
@@ -75,7 +75,7 @@ export const updateExperienceSchema = z
   .object({
     organisationId: z
       .string()
-      .uuid()
+      
       .optional(),
 
     position: z
@@ -89,8 +89,8 @@ export const updateExperienceSchema = z
 
     endDate: z
       .union([
-        z.coerce.date(),
         z.null(),
+        z.coerce.date(),
       ])
       .optional(),
 

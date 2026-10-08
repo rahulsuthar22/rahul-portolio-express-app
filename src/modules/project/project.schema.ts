@@ -56,7 +56,7 @@ export const createProjectSchema = z.object({
 
   organizationId: z
     .string()
-    .uuid()
+    
     .nullable()
     .optional()
 });

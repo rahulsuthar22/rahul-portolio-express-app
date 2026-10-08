@@ -56,7 +56,7 @@ export const createProfileSchema = z.object({
 
   currentOrgId: z
     .string()
-    .uuid()
+    
     .nullable()
     .optional()
     .openapi({

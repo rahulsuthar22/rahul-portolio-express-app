@@ -26,6 +26,12 @@ export function validate<T>(
       return;
     }
 
+    Object.defineProperty(req, target, {
+      value: result.data,
+      writable: true,
+      enumerable: true,
+      configurable: true
+    });
     res.locals[target] = result.data;
     next();
   };

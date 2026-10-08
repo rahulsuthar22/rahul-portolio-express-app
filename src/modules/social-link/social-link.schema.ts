@@ -25,7 +25,7 @@ export const createSocialLinkSchema =
 
     profileId: z
       .string()
-      .uuid()
+      
   });
 
 export const updateSocialLinkSchema =

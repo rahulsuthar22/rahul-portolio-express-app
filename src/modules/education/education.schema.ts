@@ -56,7 +56,7 @@ export const createEducationSchema = z.object({
 
   profileId: z
     .string()
-    .uuid()
+    
 });
 
 export const updateEducationSchema = z
